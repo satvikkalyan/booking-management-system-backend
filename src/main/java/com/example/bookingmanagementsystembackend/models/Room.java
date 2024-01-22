@@ -7,20 +7,18 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection = "payments")
+@Document(collection = "room")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Payments {
-    @JsonSerialize(using = ToStringSerializer.class)
+public class Room {
     @Id
-    private ObjectId paymentId;
-    private String status;
-    private Float amount;
-    private String modeofPayment;
-    @DBRef
-    private Bookings booking;
+    @JsonSerialize(using = ToStringSerializer.class)
+    private ObjectId id;
+    private boolean north;
+    private boolean south;
+    private boolean west;
+    private boolean east;
 }
