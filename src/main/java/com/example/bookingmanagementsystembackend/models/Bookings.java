@@ -15,6 +15,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Bookings {
     @Id
     private ObjectId bookingId;
-    private ObjectId paymentId;
-    private ObjectId propertyId;
+    private String paymentId;
+    private String propertyId;
 }

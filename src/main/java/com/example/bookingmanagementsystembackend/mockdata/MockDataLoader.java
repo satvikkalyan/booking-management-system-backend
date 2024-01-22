@@ -24,10 +24,10 @@ public class MockDataLoader {
             newUser.setLastName("Doe");
             newUser.setEmail("JohnDoe@email.com");
             newUser.setPassword("password");
-            List<Bookings> bookings = new ArrayList<>();
-            Bookings booking1 = new Bookings();
-            bookings.add(booking1);
-            newUser.setBookings(bookings);
+//            List<Bookings> bookings = new ArrayList<>();
+//            Bookings booking1 = new Bookings();
+//            bookings.add(booking1);
+//            newUser.setBookings(bookings);
             userRepository.save(newUser);
             System.out.println("Added Data");
 

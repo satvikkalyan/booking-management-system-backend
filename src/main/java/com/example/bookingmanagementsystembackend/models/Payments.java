@@ -14,6 +14,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Payments {
     @Id
     private ObjectId paymentId;
+    private ObjectId userId;
     private ObjectId propertyId;
     private String status;
     private Float amount;
