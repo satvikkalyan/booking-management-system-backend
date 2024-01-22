@@ -26,9 +26,9 @@ public class Bookings {
 
     @DBRef
     private Property property;
-    @JsonBackReference
-//    @DBRef
-//    private User user;
+
+    @DBRef
+    private User user;
 
     @DBRef
     private Payments payment;

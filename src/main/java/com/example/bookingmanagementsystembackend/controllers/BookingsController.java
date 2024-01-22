@@ -22,7 +22,6 @@ public class BookingsController {
     @GetMapping
     public ResponseEntity<List<Bookings>> getAllBookings() {
         Optional<List<Bookings>> bookingsOptional = bookingsService.getAllBookings();
-
         if (bookingsOptional.isPresent()) {
             List<Bookings> bookings = bookingsOptional.get();
             return new ResponseEntity<>(bookings, HttpStatus.OK);

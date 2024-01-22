@@ -21,6 +21,5 @@ public class Payments {
     private String status;
     private Float amount;
     private String modeofPayment;
-    @DBRef
-    private Bookings booking;
+
 }

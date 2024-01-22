@@ -95,12 +95,12 @@ public class MockDataLoader {
             User user = userRepository.findAll().get(0);
             Property property = propertyRepository.findAll().get(0);
             Bookings booking1 = new Bookings(
-                    new ObjectId(), property, null, new Date(), new Date(), List.of()
+                    new ObjectId(), property,user, null, new Date(), new Date(), List.of()
             );
             bookingRepository.saveAll(List.of(booking1));
             System.out.println("Added Booking Data");
             Payments payment1 = new Payments(
-                    new ObjectId(), "PAID", 150.0F, "Credit Card", booking1
+                    new ObjectId(), "PAID", 150.0F, "Credit Card"
             );
             booking1.setPayment(payment1);
             paymentsRepository.save(payment1);

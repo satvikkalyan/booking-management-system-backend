@@ -30,8 +30,4 @@ public class User {
     private String lastName;
     private String email;
     private String password;
-
-//    @DBRef
-//    @JsonIgnoreProperties("user")
-//    private List<Bookings> bookings;
 }
