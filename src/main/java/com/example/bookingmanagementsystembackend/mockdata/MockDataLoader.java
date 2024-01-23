@@ -7,9 +7,7 @@ import org.bson.types.ObjectId;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Component
 public class MockDataLoader {
@@ -61,41 +59,49 @@ public class MockDataLoader {
     }
 
     private void loadRoomAndPropertyData() {
-        long roomCount = roomRepository.count();
         long propertyCount = propertyRepository.count();
 
-        if (roomCount == 0 && propertyCount == 0) {
-            Room room1 = new Room(new ObjectId(), true, false, true, false);
-            Room room2 = new Room(new ObjectId(), false, true, false, true);
-            roomRepository.saveAll(List.of(room1, room2));
-            System.out.println("Added Room Data");
+        if (propertyCount == 0) {
+            // Construct RoomAvailability objects with NextAvailability dates
+            RoomAvailability roomAvailability1North = new RoomAvailability(new ObjectId(), "north", "01/20/2022");
+            RoomAvailability roomAvailability1East = new RoomAvailability(new ObjectId(), "east", "01/22/2022");
+
+            RoomAvailability roomAvailability2North = new RoomAvailability(new ObjectId(), "north", "01/25/2022");
+            RoomAvailability roomAvailability2South = new RoomAvailability(new ObjectId(), "south", "01/27/2022");
+
+            // Construct Property objects with associated RoomAvailability
             Property property1 = new Property(
                     new ObjectId(), "Apartment", "Cozy Apartment", "A comfortable apartment for your stay",
                     "Wi-Fi, Kitchen, Parking", 4, 100.0, "Enjoy your stay in this cozy apartment with modern amenities.",
-                    "123 Main Street", "Cozy Apt", "Modern apartment with all facilities", room1, "Cityville",
-                    List.of("image1.jpg", "image2.jpg")
+                    "123 Main Street", "Cozy Apt", "Modern apartment with all facilities",
+                    List.of(roomAvailability1North, roomAvailability1East),
+                    "Cityville", List.of("image1.jpg", "image2.jpg")
             );
+            roomAvailability1North.setPropertyId(property1.getPropertyId());
+            roomAvailability1East.setPropertyId(property1.getPropertyId());
             Property property2 = new Property(
                     new ObjectId(), "House", "Spacious House", "A spacious house with a beautiful garden",
                     "Garden, Pool, Gym", 5, 200.0, "Experience luxury in this spacious house with stunning garden views.",
-                    "456 Oak Avenue", "Luxury House", "Luxurious house with top-notch amenities", room2, "Luxurytown",
-                    List.of("image3.jpg", "image4.jpg")
+                    "456 Oak Avenue", "Luxury House", "Luxurious house with top-notch amenities",
+                    List.of(roomAvailability2North, roomAvailability2South),
+                    "Cityville", List.of("image3.jpg", "image4.jpg")
             );
+            roomAvailability2North.setPropertyId(property2.getPropertyId());
+            roomAvailability2South.setPropertyId(property2.getPropertyId());
             propertyRepository.saveAll(List.of(property1, property2));
+            roomRepository.saveAll(List.of(roomAvailability2North,roomAvailability2South,roomAvailability1North,roomAvailability1East));
             System.out.println("Added Property Data");
-
         } else {
-            System.out.println("Room and Property Data Present Already");
+            System.out.println("Property Data Present Already");
         }
     }
-
     private void loadBookingAndPaymentData() {
         long bookingCount = bookingRepository.count();
         if (bookingCount == 0) {
             User user = userRepository.findAll().get(0);
             Property property = propertyRepository.findAll().get(0);
             Bookings booking1 = new Bookings(
-                    new ObjectId(), property,user, null, new Date(), new Date(), List.of()
+                    new ObjectId(), property,user, null, new Date(), new Date(), ""
             );
             bookingRepository.saveAll(List.of(booking1));
             System.out.println("Added Booking Data");

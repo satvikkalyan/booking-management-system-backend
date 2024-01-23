@@ -23,18 +23,13 @@ public class Bookings {
     @JsonSerialize(using = ToStringSerializer.class)
     @Id
     private ObjectId id;
-
     @DBRef
     private Property property;
-
     @DBRef
     private User user;
-
     @DBRef
     private Payments payment;
-
     private Date fromDate;
     private Date toDate;
-
-    private List<Room> rooms;
+    private String roomId;
 }

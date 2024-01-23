@@ -32,9 +32,7 @@ public class Property {
     private String street;
     private String shortTitle;
     private String shortDescription;
-    @DBRef
-    @Field("rooms")
-    private Room room;
+    private List<RoomAvailability> availability;
     private String city;
     private List<String> images;
 }

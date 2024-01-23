@@ -81,8 +81,8 @@ public class PropertyService {
             existingProperty.setShortDescription(updatedProperty.getShortDescription());
         }
 
-        if (updatedProperty.getRoom() != null) {
-            existingProperty.setRoom(updatedProperty.getRoom());
+        if (updatedProperty.getAvailability() != null) {
+            existingProperty.setAvailability(updatedProperty.getAvailability());
         }
 
         if (updatedProperty.getCity() != null && !updatedProperty.getCity().isEmpty()) {

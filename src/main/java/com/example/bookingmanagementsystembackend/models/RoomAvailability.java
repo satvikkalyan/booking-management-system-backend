@@ -9,16 +9,23 @@ import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection = "room")
+import java.util.Map;
+
+@Document(collection = "roomAvailability")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Room {
+public class RoomAvailability {
     @Id
     @JsonSerialize(using = ToStringSerializer.class)
     private ObjectId id;
-    private boolean north;
-    private boolean south;
-    private boolean west;
-    private boolean east;
+    @JsonSerialize(using = ToStringSerializer.class)
+    private ObjectId propertyId;
+    private String direction;
+    private String nextAvailabilityDate;
+    public RoomAvailability(ObjectId roomId, String direction, String nextAvailableDate) {
+        this.id = roomId;
+        this.direction = direction;
+        this.nextAvailabilityDate = nextAvailableDate;
+    }
 }
