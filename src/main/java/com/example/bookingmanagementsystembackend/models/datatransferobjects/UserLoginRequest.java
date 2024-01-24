@@ -1,4 +1,4 @@
-package com.example.bookingmanagementsystembackend.models;
+package com.example.bookingmanagementsystembackend.models.datatransferobjects;
 
 
 import lombok.AllArgsConstructor;

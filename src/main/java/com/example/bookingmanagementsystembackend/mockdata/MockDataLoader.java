@@ -7,7 +7,9 @@ import org.bson.types.ObjectId;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.time.LocalDate;
 import java.util.*;
+import java.time.format.DateTimeFormatter;
 
 @Component
 public class MockDataLoader {
@@ -62,12 +64,13 @@ public class MockDataLoader {
         long propertyCount = propertyRepository.count();
 
         if (propertyCount == 0) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
             // Construct RoomAvailability objects with NextAvailability dates
-            RoomAvailability roomAvailability1North = new RoomAvailability(new ObjectId(), "north", "01/20/2022");
-            RoomAvailability roomAvailability1East = new RoomAvailability(new ObjectId(), "east", "01/22/2022");
+            RoomAvailability roomAvailability1North = new RoomAvailability(new ObjectId(), "north", LocalDate.parse("01/20/2025", formatter));
+            RoomAvailability roomAvailability1East = new RoomAvailability(new ObjectId(), "east", LocalDate.parse("01/22/2022", formatter) );
 
-            RoomAvailability roomAvailability2North = new RoomAvailability(new ObjectId(), "north", "01/25/2022");
-            RoomAvailability roomAvailability2South = new RoomAvailability(new ObjectId(), "south", "01/27/2022");
+            RoomAvailability roomAvailability2North = new RoomAvailability(new ObjectId(), "north", LocalDate.parse("01/25/2022", formatter));
+            RoomAvailability roomAvailability2South = new RoomAvailability(new ObjectId(), "south", LocalDate.parse("01/27/2022", formatter) );
 
             // Construct Property objects with associated RoomAvailability
             Property property1 = new Property(

@@ -1,18 +1,27 @@
 package com.example.bookingmanagementsystembackend.service;
-
+import com.example.bookingmanagementsystembackend.models.RoomAvailability;
+import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import com.example.bookingmanagementsystembackend.models.datatransferobjects.PropertySearchRequest;
 import com.example.bookingmanagementsystembackend.repository.PropertyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.example.bookingmanagementsystembackend.models.Property;
 import org.bson.types.ObjectId;
-import java.util.List;
-import java.util.Optional;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 @Service
 public class PropertyService {
     @Autowired
     private PropertyRepository propertyRepository;
-
+    @Autowired
+    private MongoOperations mongoOperations;
     public List<Property> allProperties() {
         return propertyRepository.findAll();
     }
@@ -93,4 +102,40 @@ public class PropertyService {
             existingProperty.setImages(updatedProperty.getImages());
         }
     }
+
+    public List<Property> searchProperties(PropertySearchRequest request) {
+        String destination = request.getDestination();
+        int numberOfBeds = request.getNumberOfBeds();
+        LocalDate startDate;
+        LocalDate endDate;
+        try {
+             startDate = parseToLocalDate( request.getStartDate());
+             endDate = parseToLocalDate( request.getEndDate());
+
+        } catch (ParseException e) {
+            throw new IllegalArgumentException("Invalid date format", e);
+        }
+        List<Property> properties = propertyRepository.findPropertiesByCityAndNonEmptyAvailability(destination);
+        List<Property> filteredProperties = new ArrayList<>();
+        for (Property property : properties) {
+            Property filteredProperty = new Property(property);
+            List<RoomAvailability> filteredRooms = new ArrayList<>();
+            for (RoomAvailability roomAvailability : property.getAvailability()) {
+                LocalDate roomAvailabilityDate = roomAvailability.getNextAvailabilityDate();
+                if (!roomAvailabilityDate.isAfter(startDate)) {
+                    filteredRooms.add(roomAvailability);
+                }
+            }
+            filteredProperty.setAvailability(filteredRooms);
+            if (!filteredRooms.isEmpty()) {
+                filteredProperties.add(filteredProperty);
+            }
+        }
+
+        return  filteredProperties;
+    }
+    private static LocalDate parseToLocalDate( String dateString) throws ParseException {
+        return LocalDate.parse(dateString, DateTimeFormatter.ofPattern("MM/dd/yyyy"));
+    }
+
 }

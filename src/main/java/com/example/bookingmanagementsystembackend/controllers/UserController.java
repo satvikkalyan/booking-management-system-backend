@@ -3,7 +3,7 @@ package com.example.bookingmanagementsystembackend.controllers;
 
 import com.example.bookingmanagementsystembackend.exceptions.UserAlreadyExistsException;
 import com.example.bookingmanagementsystembackend.models.User;
-import com.example.bookingmanagementsystembackend.models.UserLoginRequest;
+import com.example.bookingmanagementsystembackend.models.datatransferobjects.UserLoginRequest;
 import com.example.bookingmanagementsystembackend.service.UserService;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.naming.AuthenticationException;
-import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 

@@ -35,4 +35,21 @@ public class Property {
     private List<RoomAvailability> availability;
     private String city;
     private List<String> images;
+
+    public Property(Property property) {
+        this.propertyId = property.getPropertyId();
+        this.propertyType = property.getPropertyType();
+        this.propertyName = property.getPropertyName();
+        this.propertyDescription = property.getPropertyDescription();
+        this.propertyFacilities = property.getPropertyFacilities();
+        this.rating = property.getRating();
+        this.price = property.getPrice();
+        this.description = property.getDescription();
+        this.street = property.getStreet();
+        this.shortTitle = property.getShortTitle();
+        this.shortDescription = property.getShortDescription();
+        this.availability = property.getAvailability();
+        this.city = property.getCity();
+        this.images = property.getImages();
+    }
 }

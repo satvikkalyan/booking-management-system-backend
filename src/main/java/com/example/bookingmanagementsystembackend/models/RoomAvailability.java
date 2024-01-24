@@ -9,6 +9,8 @@ import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.Map;
 
 @Document(collection = "roomAvailability")
@@ -22,8 +24,9 @@ public class RoomAvailability {
     @JsonSerialize(using = ToStringSerializer.class)
     private ObjectId propertyId;
     private String direction;
-    private String nextAvailabilityDate;
-    public RoomAvailability(ObjectId roomId, String direction, String nextAvailableDate) {
+    @JsonSerialize(using = ToStringSerializer.class)
+    private LocalDate nextAvailabilityDate;
+    public RoomAvailability(ObjectId roomId, String direction, LocalDate nextAvailableDate) {
         this.id = roomId;
         this.direction = direction;
         this.nextAvailabilityDate = nextAvailableDate;

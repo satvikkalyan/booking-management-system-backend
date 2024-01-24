@@ -1,6 +1,7 @@
 package com.example.bookingmanagementsystembackend.controllers;
 
 import com.example.bookingmanagementsystembackend.models.Property;
+import com.example.bookingmanagementsystembackend.models.datatransferobjects.PropertySearchRequest;
 import com.example.bookingmanagementsystembackend.service.PropertyService;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,5 +48,39 @@ public class PropertyController {
     public ResponseEntity<Void> deleteProperty(@PathVariable ObjectId id) {
         propertyService.deleteProperty(id);
         return ResponseEntity.noContent().build();
+    }
+    @PostMapping("/search")
+    public ResponseEntity<List<Property>> searchProperties(@RequestBody PropertySearchRequest request) {
+        try {
+            if (request.getDestination() != null && !request.getDestination().matches("^[a-zA-Z0-9 ]+$")) {
+                return ResponseEntity.badRequest().body(null);
+            }
+
+            // Validate date format (MM/dd/yyyy)
+            if (!isValidDateFormat(request.getStartDate()) || !isValidDateFormat(request.getEndDate())) {
+                return ResponseEntity.badRequest().body(null);
+            }
+
+            // Validate number of beds/adults is a positive natural number
+            if (request.getNumberOfBeds() <= 0) {
+                return ResponseEntity.badRequest().body(null);
+            }
+
+            List<Property> properties = propertyService.searchProperties(request);
+            System.out.println(properties.isEmpty());
+            return ResponseEntity.ok(properties);
+        } catch (Exception e) {
+            System.out.println(e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+    private boolean isValidDateFormat(String date) {
+        // Regex for MM/dd/yyyy format
+        String dateFormatRegex = "^(0[1-9]|1[0-2])/(0[1-9]|[12][0-9]|3[01])/(19|20)\\d\\d$";
+        boolean isValid = date.matches(dateFormatRegex);
+        if (!isValid) {
+            System.out.println("Invalid date format: " + date);
+        }
+        return isValid;
     }
 }
