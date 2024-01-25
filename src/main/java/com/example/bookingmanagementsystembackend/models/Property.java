@@ -34,8 +34,8 @@ public class Property {
     private String shortDescription;
     private List<RoomAvailability> availability;
     private String city;
-    private List<String> images;
-
+    private String image;
+    private List<String> carouselImages;
     public Property(Property property) {
         this.propertyId = property.getPropertyId();
         this.propertyType = property.getPropertyType();
@@ -50,6 +50,7 @@ public class Property {
         this.shortDescription = property.getShortDescription();
         this.availability = property.getAvailability();
         this.city = property.getCity();
-        this.images = property.getImages();
+        this.image = property.getImage();
+        this.carouselImages = property.getCarouselImages();
     }
 }

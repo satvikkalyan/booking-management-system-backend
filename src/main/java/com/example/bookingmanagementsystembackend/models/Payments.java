@@ -20,6 +20,6 @@ public class Payments {
     private ObjectId paymentId;
     private String status;
     private Float amount;
-    private String modeofPayment;
+    private String modeOfPayment;
 
 }

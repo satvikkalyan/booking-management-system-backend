@@ -15,16 +15,16 @@ import java.time.format.DateTimeFormatter;
 public class MockDataLoader {
     private final UserRepository userRepository;
     private final PropertyRepository propertyRepository;
-    private final RoomRepository roomRepository;
+    private final RoomAvailabilityRepository roomAvailabilityRepository;
 
     private final BookingsRepository bookingRepository;
 
     private final PaymentsRepository paymentsRepository;
 
-    public MockDataLoader(UserRepository userRepository, PropertyRepository propertyRepository, RoomRepository roomRepository, BookingsRepository bookingRepository, PaymentsRepository paymentsRepository) {
+    public MockDataLoader(UserRepository userRepository, PropertyRepository propertyRepository, RoomAvailabilityRepository roomAvailabilityRepository, BookingsRepository bookingRepository, PaymentsRepository paymentsRepository) {
         this.userRepository = userRepository;
         this.propertyRepository = propertyRepository;
-        this.roomRepository = roomRepository;
+        this.roomAvailabilityRepository = roomAvailabilityRepository;
         this.bookingRepository = bookingRepository;
         this.paymentsRepository = paymentsRepository;
     }
@@ -40,7 +40,7 @@ public class MockDataLoader {
     private void deleteAllData() {
         userRepository.deleteAll();
         propertyRepository.deleteAll();
-        roomRepository.deleteAll();
+        roomAvailabilityRepository.deleteAll();
         bookingRepository.deleteAll();
         paymentsRepository.deleteAll();
     }
@@ -66,33 +66,57 @@ public class MockDataLoader {
         if (propertyCount == 0) {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
             // Construct RoomAvailability objects with NextAvailability dates
-            RoomAvailability roomAvailability1North = new RoomAvailability(new ObjectId(), "north", LocalDate.parse("01/20/2025", formatter));
-            RoomAvailability roomAvailability1East = new RoomAvailability(new ObjectId(), "east", LocalDate.parse("01/22/2022", formatter) );
+            RoomAvailability roomAvailability1NorthEast = new RoomAvailability(new ObjectId(), "north-east", LocalDate.parse("01/20/2025", formatter));
+            RoomAvailability roomAvailability1SouthEast = new RoomAvailability(new ObjectId(), "south-east", LocalDate.parse("01/22/2022", formatter) );
+            RoomAvailability roomAvailability1NorthWest = new RoomAvailability(new ObjectId(), "north-west", LocalDate.parse("01/20/2022", formatter));
+            RoomAvailability roomAvailability1SouthWest = new RoomAvailability(new ObjectId(), "south-west", LocalDate.parse("01/22/2022", formatter) );
 
-            RoomAvailability roomAvailability2North = new RoomAvailability(new ObjectId(), "north", LocalDate.parse("01/25/2022", formatter));
-            RoomAvailability roomAvailability2South = new RoomAvailability(new ObjectId(), "south", LocalDate.parse("01/27/2022", formatter) );
+            RoomAvailability roomAvailability2NorthEast = new RoomAvailability(new ObjectId(), "north-east", LocalDate.parse("01/20/2025", formatter));
+            RoomAvailability roomAvailability2SouthEast = new RoomAvailability(new ObjectId(), "south-east", LocalDate.parse("01/22/2022", formatter) );
+            RoomAvailability roomAvailability2NorthWest = new RoomAvailability(new ObjectId(), "north-west", LocalDate.parse("01/20/2022", formatter));
+            RoomAvailability roomAvailability2SouthWest = new RoomAvailability(new ObjectId(), "south-west", LocalDate.parse("01/22/2022", formatter) );
+
 
             // Construct Property objects with associated RoomAvailability
             Property property1 = new Property(
                     new ObjectId(), "Apartment", "Cozy Apartment", "A comfortable apartment for your stay",
                     "Wi-Fi, Kitchen, Parking", 4, 100.0, "Enjoy your stay in this cozy apartment with modern amenities.",
                     "123 Main Street", "Cozy Apt", "Modern apartment with all facilities",
-                    List.of(roomAvailability1North, roomAvailability1East),
-                    "Cityville", List.of("image1.jpg", "image2.jpg")
+                    List.of(roomAvailability1NorthEast, roomAvailability1SouthEast,roomAvailability1NorthWest, roomAvailability1SouthWest),
+                    "Cityville",
+                    "https://cf.bstatic.com/xdata/images/hotel/square600/261707778.webp?k=fa6b6128468ec15e81f7d076b6f2473fa3a80c255582f155cae35f9edbffdd78&o=&s=1",
+                    List.of("https://cf.bstatic.com/xdata/images/hotel/square600/261707778.webp?k=fa6b6128468ec15e81f7d076b6f2473fa3a80c255582f155cae35f9edbffdd78&o=&s=1",
+                            "https://cf.bstatic.com/xdata/images/hotel/square600/261707778.webp?k=fa6b6128468ec15e81f7d076b6f2473fa3a80c255582f155cae35f9edbffdd78&o=&s=1",
+                            "https://cf.bstatic.com/xdata/images/hotel/square600/261707778.webp?k=fa6b6128468ec15e81f7d076b6f2473fa3a80c255582f155cae35f9edbffdd78&o=&s=1",
+                            "https://cf.bstatic.com/xdata/images/hotel/square600/261707778.webp?k=fa6b6128468ec15e81f7d076b6f2473fa3a80c255582f155cae35f9edbffdd78&o=&s=1",
+                            "https://cf.bstatic.com/xdata/images/hotel/square600/261707778.webp?k=fa6b6128468ec15e81f7d076b6f2473fa3a80c255582f155cae35f9edbffdd78&o=&s=1",
+                            "https://cf.bstatic.com/xdata/images/hotel/square600/261707778.webp?k=fa6b6128468ec15e81f7d076b6f2473fa3a80c255582f155cae35f9edbffdd78&o=&s=1"
+                            )
             );
-            roomAvailability1North.setPropertyId(property1.getPropertyId());
-            roomAvailability1East.setPropertyId(property1.getPropertyId());
+            roomAvailability1NorthEast.setPropertyId(property1.getPropertyId());
+            roomAvailability1SouthEast.setPropertyId(property1.getPropertyId());
+            roomAvailability1NorthWest.setPropertyId(property1.getPropertyId());
+            roomAvailability1SouthWest.setPropertyId(property1.getPropertyId());
             Property property2 = new Property(
                     new ObjectId(), "House", "Spacious House", "A spacious house with a beautiful garden",
                     "Garden, Pool, Gym", 5, 200.0, "Experience luxury in this spacious house with stunning garden views.",
                     "456 Oak Avenue", "Luxury House", "Luxurious house with top-notch amenities",
-                    List.of(roomAvailability2North, roomAvailability2South),
-                    "Cityville", List.of("image3.jpg", "image4.jpg")
+                    List.of(roomAvailability2NorthWest,roomAvailability2NorthEast, roomAvailability2SouthWest,roomAvailability2SouthEast),
+                    "Cityville", "https://cf.bstatic.com/xdata/images/hotel/square600/261707778.webp?k=fa6b6128468ec15e81f7d076b6f2473fa3a80c255582f155cae35f9edbffdd78&o=&s=1",                    List.of("https://cf.bstatic.com/xdata/images/hotel/square600/261707778.webp?k=fa6b6128468ec15e81f7d076b6f2473fa3a80c255582f155cae35f9edbffdd78&o=&s=1",
+                    "https://cf.bstatic.com/xdata/images/hotel/square600/261707778.webp?k=fa6b6128468ec15e81f7d076b6f2473fa3a80c255582f155cae35f9edbffdd78&o=&s=1",
+                    "https://cf.bstatic.com/xdata/images/hotel/square600/261707778.webp?k=fa6b6128468ec15e81f7d076b6f2473fa3a80c255582f155cae35f9edbffdd78&o=&s=1",
+                    "https://cf.bstatic.com/xdata/images/hotel/square600/261707778.webp?k=fa6b6128468ec15e81f7d076b6f2473fa3a80c255582f155cae35f9edbffdd78&o=&s=1",
+                    "https://cf.bstatic.com/xdata/images/hotel/square600/261707778.webp?k=fa6b6128468ec15e81f7d076b6f2473fa3a80c255582f155cae35f9edbffdd78&o=&s=1",
+                    "https://cf.bstatic.com/xdata/images/hotel/square600/261707778.webp?k=fa6b6128468ec15e81f7d076b6f2473fa3a80c255582f155cae35f9edbffdd78&o=&s=1"
+
+            )
             );
-            roomAvailability2North.setPropertyId(property2.getPropertyId());
-            roomAvailability2South.setPropertyId(property2.getPropertyId());
+            roomAvailability2NorthWest.setPropertyId(property2.getPropertyId());
+            roomAvailability2NorthEast.setPropertyId(property2.getPropertyId());
+            roomAvailability2SouthWest.setPropertyId(property2.getPropertyId());
+            roomAvailability2SouthEast.setPropertyId(property2.getPropertyId());
             propertyRepository.saveAll(List.of(property1, property2));
-            roomRepository.saveAll(List.of(roomAvailability2North,roomAvailability2South,roomAvailability1North,roomAvailability1East));
+            roomAvailabilityRepository.saveAll(List.of(roomAvailability1NorthEast, roomAvailability1SouthEast,roomAvailability1NorthWest, roomAvailability1SouthWest,roomAvailability2NorthWest,roomAvailability2NorthEast, roomAvailability2SouthWest,roomAvailability2SouthEast));
             System.out.println("Added Property Data");
         } else {
             System.out.println("Property Data Present Already");

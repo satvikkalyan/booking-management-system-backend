@@ -2,7 +2,9 @@ package com.example.bookingmanagementsystembackend.controllers;
 
 
 import com.example.bookingmanagementsystembackend.models.Bookings;
+import com.example.bookingmanagementsystembackend.models.datatransferobjects.BookingRequestObject;
 import com.example.bookingmanagementsystembackend.service.BookingsService;
+import org.apache.coyote.Response;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -35,7 +37,15 @@ public class BookingsController {
         Bookings bookings = bookingsService.getBookingById(id);
         return new ResponseEntity<>(bookings, HttpStatus.OK);
     }
-
+    @PostMapping("/book")
+    public ResponseEntity<Bookings> createBookings(@RequestBody BookingRequestObject bookingRequestObject) {
+        if(bookingRequestObject.getFromDate().length()>0 && bookingRequestObject.getToDate().length()>0 && bookingRequestObject.getPropertyId().length()>0
+        && bookingRequestObject.getModeOfPayment().length()>0) {
+            Bookings bookings = bookingsService.createBooking(bookingRequestObject);
+            return new ResponseEntity<>(bookings, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
     @PostMapping
     public ResponseEntity<Bookings> createBookings(@RequestBody Bookings bookings) {
         Bookings createdBookings = bookingsService.createBooking(bookings);

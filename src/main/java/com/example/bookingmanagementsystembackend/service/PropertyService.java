@@ -98,8 +98,8 @@ public class PropertyService {
             existingProperty.setCity(updatedProperty.getCity());
         }
 
-        if (updatedProperty.getImages() != null && !updatedProperty.getImages().isEmpty()) {
-            existingProperty.setImages(updatedProperty.getImages());
+        if (updatedProperty.getImage() != null && !updatedProperty.getImage().isEmpty()) {
+            existingProperty.setImage(updatedProperty.getImage());
         }
     }
 
